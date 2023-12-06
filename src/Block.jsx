@@ -2,6 +2,7 @@ import './Block.css'
 
 const Block = ({value}) => {
   const colors = {
+    0: 'none',
     1: 'cyan',
     2: 'blue',
     3: 'orange',
@@ -12,8 +13,7 @@ const Block = ({value}) => {
   };
 
   return (
-    <div className= {`block ${colors[value]}`}>
-    </div>
+    <div className= {`block ${colors[value]}`} />
   )
 }
 

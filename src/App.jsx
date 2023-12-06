@@ -3,12 +3,11 @@ import './App.css'
 import Board from './Board.jsx'
 
 const App = () => {
-  const [pieceX, setPieceX] = useState(5);
-  const [pieceY, setPieceY] = useState(5);
+  const [time, setTime] = useState(1500);
 
   return (
     <div id="app">
-      <Board />
+      <Board time = {time}/>
     </div>
   )
 };
