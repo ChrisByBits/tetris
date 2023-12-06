@@ -1,0 +1,36 @@
+.block {
+  background-color: black;
+  
+}
+
+.cyan {
+  border-left: 17.5px solid transparent;
+  border-right: 17.5px solid transparent;
+  border-bottom: 30.2px solid cyan;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.orange {
+  background-color: orange;
+  position: relative;
+  clip-path: polygon(50% 0%, 100% 19%, 82% 100%, 18% 100%, 0% 19%);
+}
+
+.red {
+  background-color: red;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.green {
+  background-color: limegreen;
+}
+
+.violet {
+  background-color: violet;
+}

@@ -1,0 +1,16 @@
+#board {
+  display: grid;
+  grid-template-rows: repeat(21, 1fr);
+  min-width: calc(350px + 18px);
+  background-color: #1d1d1d;
+  gap: 2px;
+  border: 2px solid white;
+  border-top: none;
+}
+
+.board-row{
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  height: 35px;
+  gap: 2px;
+}
