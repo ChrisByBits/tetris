@@ -47,6 +47,5 @@ export const figures = {
 };
 
 export const randFigure = () => {
-  return figures[1];
-  // return figures[Math.floor(Math.random() * (Object.keys(figures).length - 1)  + 1)]
+   return figures[Math.floor(Math.random() * (Object.keys(figures).length - 1)  + 1)]
 }
