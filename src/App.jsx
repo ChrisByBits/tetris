@@ -1,15 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-import Board from './Board.jsx'
+import React from 'react';
+import Game from './components/Game.jsx'
 
 const App = () => {
-  const [time, setTime] = useState(1500);
-
   return (
     <div id="app">
-      <Board time = {time}/>
+      <Game />
     </div>
   )
 };
 
-export default App
+export default App;
