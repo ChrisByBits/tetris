@@ -13,15 +13,15 @@ export const useBoard = (player, respawn) => {
   useEffect(() => {
     const update = (prevState) => {
       const newState = prevState.map(row => row.map(cell => (cell.state === 'erase' ? {value: 0, state: 'erase'}: cell)));
-      
+
       player.shape.forEach((row, rowIndex) => {
         row.forEach((cellValue, cellIndex) => {
           if (cellValue !== 0){
-            newState[rowIndex + player.position.y][cellIndex + player.position.x] = {value: cellValue, state: 'erase'};
+            newState[rowIndex + player.position.y][cellIndex + player.position.x] = {value: cellValue, state: `${player.collided ? 'merged' : 'erase'}`};
           }
         })
       })
-
+      console.log('updated');
       return newState;
     };
     

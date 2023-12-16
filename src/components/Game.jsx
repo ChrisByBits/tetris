@@ -19,11 +19,11 @@ const Game = () => {
   }
 
   const moveLat = (side) => {
-    updatePosition({ x: side, y: 0, collided: false });
+    updatePosition({ posX: side, posY: 0, collided: false });
   }
 
   const fall = () => {
-    updatePosition({ x: 0, y: 1, });
+    updatePosition({ posX: 0, posY: 1 });
   }
 
   useEffect(() => {

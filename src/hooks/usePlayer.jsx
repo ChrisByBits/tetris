@@ -18,9 +18,10 @@ export const usePlayer = () => {
     })}, [])
 
   const updatePosition = ({ posX, posY, collided}) => {
+    console.log({ posX, posY, collided})
     setPlayer(prevState => ({
         ...prevState, //spread the previous state to use it
-        position: {x: (prevState.position.x + posX), y: (prevState.position.y + posY)}, 
+        position: {x: (prevState.position.x += posX), y: (prevState.position.y += posY)}, 
         collided
       }));
   };
