@@ -21,13 +21,16 @@ export const useBoard = (player, respawn) => {
           }
         })
       })
-      console.log('updated');
+
+      if (player.collided)
+        respawn();
+
       return newState;
     };
     
     setBoard((prevState) => update(prevState));
 
-  }, [player.position.x, player.position.y, player.shape, player.collided]);
+  }, [player.collided, player.position.x, player.position.y, player.shape, respawn]);
 
   return [board, setBoard];
 }

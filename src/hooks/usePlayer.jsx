@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { randFigure } from '../figures';
+import { randFigure } from '../utils/figures';
 import { COLUMNS } from './useBoard';
 
 
@@ -15,17 +15,16 @@ export const usePlayer = () => {
       shape: randFigure().shape,
       position: {x: COLUMNS / 2 - 2, y: 0},
       collided: false
-    })}, [])
+    })}, []);
 
   const updatePosition = ({ posX, posY, collided}) => {
-    console.log({ posX, posY, collided})
     setPlayer(prevState => ({
         ...prevState, //spread the previous state to use it
-        position: {x: (prevState.position.x += posX), y: (prevState.position.y += posY)}, 
+        position: {x: (prevState.position.x + posX), y: (prevState.position.y + posY)}, 
         collided
       }));
   };
-
+  
 
   return [player, respawn, updatePosition];
 }

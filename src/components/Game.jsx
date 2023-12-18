@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from 'react';
-
+import { checkCollision } from '../utils/collisions';
 import Board from './Board'
 
 import { usePlayer } from '../hooks/usePlayer';
 import { createEmptyBoard, useBoard } from '../hooks/useBoard';
 
 const Game = () => {
-  const [player, reset, updatePosition] = usePlayer();
-  const [board, setBoard] = useBoard(player, reset);
+  const [player, resetPosition, updatePosition] = usePlayer();
+  const [board, setBoard] = useBoard(player, resetPosition);
   const [gameOver, setGameOver] = useState(false);
   const [fallTime, setFallTime] = useState(null);
 
-  console.log(board)
-
   const start = () => {
+    setGameOver(false);
     setBoard(createEmptyBoard());
-    reset();
+    resetPosition();
   }
 
   const moveLat = (side) => {
-    updatePosition({ posX: side, posY: 0, collided: false });
+    if (!checkCollision(player, board, { posX: side, posY: 0 }))
+      updatePosition({ posX: side, posY: 0});
+  }
+
+  const moveDown = () => {
+    if (!checkCollision(player, board, { posX: 0, posY: 1 }))
+      updatePosition({ posX: 0, posY: 1, collided: false });
+    else {
+      if (player.position.y === 0) 
+        setGameOver(true);
+      
+      updatePosition({ posX: 0, posY: 1, collided: true });
+    }
   }
 
   const fall = () => {
-    updatePosition({ posX: 0, posY: 1 });
+    moveDown()
   }
+
 
   useEffect(() => {
     const movePlayer = (event) => {
@@ -38,7 +50,7 @@ const Game = () => {
           break;
         }
         case 'ArrowDown': {
-          fall();
+          moveDown();
           break;
         }
         default:
@@ -50,7 +62,8 @@ const Game = () => {
     return () => {
       document.removeEventListener('keydown', movePlayer);
     };
-  }, []);
+  }, [moveLat, moveDown] // the effect must be run again if these functions change, but with the player position updated
+  );
 
   return (
     <div>

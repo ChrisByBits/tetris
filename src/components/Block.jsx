@@ -1,6 +1,6 @@
 import './Block.css'
 
-import { figures } from '../figures';
+import { figures } from '../utils/figures';
 
 const Block = ({id, value}) => {
   return (
