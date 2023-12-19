@@ -29,7 +29,7 @@ const Game = () => {
       if (player.position.y === 0) 
         setGameOver(true);
       
-      updatePosition({ posX: 0, posY: 1, collided: true });
+      updatePosition({ posX: 0, posY: 0, collided: true });
     }
   }
 
