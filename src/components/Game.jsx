@@ -6,7 +6,7 @@ import { usePlayer } from '../hooks/usePlayer';
 import { createEmptyBoard, useBoard } from '../hooks/useBoard';
 
 const Game = () => {
-  const [player, resetPosition, updatePosition] = usePlayer();
+  const [player, resetPosition, updatePosition, rotate] = usePlayer();
   const [board, setBoard] = useBoard(player, resetPosition);
   const [gameOver, setGameOver] = useState(false);
   const [fallTime, setFallTime] = useState(null);
@@ -40,17 +40,25 @@ const Game = () => {
 
   useEffect(() => {
     const movePlayer = (event) => {
-      switch (event.key) {
-        case 'ArrowLeft': {
+      switch (event.key.toLowerCase()) {
+        case 'arrowleft': {
           moveLat(-1);
           break;
         }
-        case 'ArrowRight': {
+        case 'arrowright': {
           moveLat(1);
           break;
         }
-        case 'ArrowDown': {
+        case 'arrowdown': {
           moveDown();
+          break;
+        }
+        case 'z': {
+          rotate(board, 1);
+          break;
+        }
+        case 'x': {
+          rotate(board, -1);
           break;
         }
         default:
@@ -62,7 +70,7 @@ const Game = () => {
     return () => {
       document.removeEventListener('keydown', movePlayer);
     };
-  }, [moveLat, moveDown] // the effect must be run again if these functions change, but with the player position updated
+  }, [moveLat, moveDown, rotate] // the effect must be run again if these functions change, but with the player position updated
   );
 
   return (

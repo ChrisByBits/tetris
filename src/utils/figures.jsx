@@ -42,7 +42,8 @@ export const figures = {
   7: {
     color: 'violet',
     shape: [[7, 7, 0], 
-            [0, 7, 7]]
+            [0, 7, 7],
+            [0, 0, 0]]
   }
 };
 

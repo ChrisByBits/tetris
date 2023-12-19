@@ -1,7 +1,5 @@
 export const checkCollision = (player, board, { posX, posY }) => {
-  console.log(posY);
-  console.log(player);
-  console.log(board);
+  
   for (let y = 0; y < player.shape.length; y++) {
     for (let x = 0; x < player.shape[y].length; x++) {
       if (player.shape[y][x] !== 0) {
