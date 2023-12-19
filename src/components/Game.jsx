@@ -4,6 +4,7 @@ import Board from './Board'
 
 import { usePlayer } from '../hooks/usePlayer';
 import { createEmptyBoard, useBoard } from '../hooks/useBoard';
+import { useInterval } from '../hooks/useInterval';
 
 const Game = () => {
   const [player, resetPosition, updatePosition, rotate] = usePlayer();
@@ -15,6 +16,7 @@ const Game = () => {
     setGameOver(false);
     setBoard(createEmptyBoard());
     resetPosition();
+    setFallTime(1000);
   }
 
   const moveLat = (side) => {
@@ -22,7 +24,9 @@ const Game = () => {
       updatePosition({ posX: side, posY: 0});
   }
 
-  const moveDown = () => {
+  const fall = () => {
+    setFallTime(1000);
+
     if (!checkCollision(player, board, { posX: 0, posY: 1 }))
       updatePosition({ posX: 0, posY: 1, collided: false });
     else {
@@ -33,10 +37,10 @@ const Game = () => {
     }
   }
 
-  const fall = () => {
-    moveDown()
+  const moveDown = () => {
+    setFallTime(null);
+    fall();
   }
-
 
   useEffect(() => {
     const movePlayer = (event) => {
@@ -72,6 +76,10 @@ const Game = () => {
     };
   }, [moveLat, moveDown, rotate] // the effect must be run again if these functions change, but with the player position updated
   );
+
+  useInterval(() => {
+    fall();
+  }, fallTime);
 
   return (
     <div>
