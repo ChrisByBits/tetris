@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+
 import { checkCollision } from '../utils/collisions';
 import Board from './Board'
 
 import { usePlayer } from '../hooks/usePlayer';
 import { createEmptyBoard, useBoard } from '../hooks/useBoard';
 import { useInterval } from '../hooks/useInterval';
+
+import music from '../audios/music.mp3'
 
 const Game = () => {
   const [player, resetPosition, updatePosition, rotate] = usePlayer();
@@ -80,6 +83,17 @@ const Game = () => {
   useInterval(() => {
     fall();
   }, fallTime);
+
+  useEffect(() => {
+    const audio = new Audio(music);
+    audio.volume = 0.5;
+    audio.play();
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
 
   return (
     <div>
