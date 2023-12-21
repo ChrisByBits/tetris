@@ -55,8 +55,6 @@ export const usePlayer = () => {
 
     let offset = 1;
 
-    console.log(auxPlayer, board, { x: 0, y: 0 });
-
     while (checkCollision(auxPlayer, board, { posX: 0, posY: 0 })) {
       auxPlayer.position.x += offset;
 

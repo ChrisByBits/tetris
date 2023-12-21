@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import './Game.css'
+
 import { checkCollision } from '../utils/collisions';
 import Board from './Board'
 
@@ -40,6 +42,16 @@ const Game = () => {
     }
   }
 
+  const hardFall = () => {
+    setFallTime(1000);
+    let iterator = 0;
+    while(!checkCollision(player, board, { posX: 0, posY: iterator })) {
+        iterator++;
+    }
+    updatePosition({ posX: 0, posY: iterator - 1, collided: true });
+    // since the collision is being detected in the current cell, it goes back one row
+  }
+
   const moveDown = () => {
     setFallTime(null);
     fall();
@@ -47,6 +59,7 @@ const Game = () => {
 
   useEffect(() => {
     const movePlayer = (event) => {
+      console.log(event.key)
       switch (event.key.toLowerCase()) {
         case 'arrowleft': {
           moveLat(-1);
@@ -58,6 +71,10 @@ const Game = () => {
         }
         case 'arrowdown': {
           moveDown();
+          break;
+        }
+        case ' ': {
+          hardFall();
           break;
         }
         case 'z': {
@@ -77,7 +94,7 @@ const Game = () => {
     return () => {
       document.removeEventListener('keydown', movePlayer);
     };
-  }, [moveLat, moveDown, rotate] // the effect must be run again if these functions change, but with the player position updated
+  }, [moveLat, moveDown, hardFall, rotate] // the effect must be run again if these functions change, but with the player position updated
   );
 
   useInterval(() => {
@@ -96,7 +113,7 @@ const Game = () => {
   }, []);
 
   return (
-    <div>
+    <div id ="game">
       <Board board = {board}/>
     </div>
   );
