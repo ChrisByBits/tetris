@@ -4,7 +4,7 @@ import { checkCollision } from '../utils/collisions';
 import { COLUMNS } from './useBoard';
 
 
-export const usePlayer = () => {
+export const usePlayer = (nextFigures) => {
   const [player, setPlayer] = useState( {
     shape: randFigure().shape,
     position: {x: 0, y: 0},
@@ -13,10 +13,11 @@ export const usePlayer = () => {
 
   const respawn = useCallback(() => {
     setPlayer({
-      shape: randFigure().shape,
+      shape: nextFigures[0].shape,
       position: {x: COLUMNS / 2 - 2, y: 0},
       collided: false
-    })}, []);
+    })
+}, [nextFigures]);
 
   const updatePosition = ({ posX, posY, collided}) => {
     setPlayer(prevState => ({

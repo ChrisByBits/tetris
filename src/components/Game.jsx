@@ -3,22 +3,27 @@ import React, { useState, useEffect } from 'react';
 import './Game.css'
 
 import { checkCollision } from '../utils/collisions';
+
 import Board from './Board'
+import NextFigures from './NextFigures'
 
 import { usePlayer } from '../hooks/usePlayer';
+import { createNewFiguresArray, useNextFigures } from '../hooks/useNextFigures';
 import { createEmptyBoard, useBoard } from '../hooks/useBoard';
 import { useInterval } from '../hooks/useInterval';
 
 import music from '../audios/music.mp3'
 
 const Game = () => {
-  const [player, resetPosition, updatePosition, rotate] = usePlayer();
-  const [board, setBoard] = useBoard(player, resetPosition);
+  const [nextFigures, setNextFigures, updateNextFigures] = useNextFigures();
+  const [player, resetPosition, updatePosition, rotate] = usePlayer(nextFigures);
+  const [board, setBoard] = useBoard(player, resetPosition, updateNextFigures);
   const [gameOver, setGameOver] = useState(false);
   const [fallTime, setFallTime] = useState(null);
 
   const start = () => {
     setGameOver(false);
+    setNextFigures(createNewFiguresArray());
     setBoard(createEmptyBoard());
     resetPosition();
     setFallTime(1000);
@@ -115,6 +120,7 @@ const Game = () => {
   return (
     <div id ="game">
       <Board board = {board}/>
+      <NextFigures figuresArray = {nextFigures}/>
     </div>
   );
 }

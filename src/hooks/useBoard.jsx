@@ -7,7 +7,7 @@ export const createEmptyBoard = () => {
   return Array.from({ length: ROWS }, () => Array(COLUMNS).fill(0).map(() => ({value: 0, state: 'erase'})));
 };
 
-export const useBoard = (player, respawn) => {
+export const useBoard = (player, respawn, updateNextFigures) => {
   const [board, setBoard] = useState(createEmptyBoard());
   const [erasedRows, setErasedRows] = useState(0);
 
@@ -39,6 +39,7 @@ export const useBoard = (player, respawn) => {
       });
 
       if (player.collided) {
+        updateNextFigures();
         respawn();
         return eraseRows(newState);
       }
@@ -48,7 +49,7 @@ export const useBoard = (player, respawn) => {
     
     setBoard((prevState) => update(prevState));
 
-  }, [player.collided, player.position.x, player.position.y, player.shape, respawn]);
+  }, [player.collided, player.position.x, player.position.y, player.shape, respawn, updateNextFigures]);
 
   return [board, setBoard];
 }
