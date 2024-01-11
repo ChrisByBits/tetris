@@ -1,3 +1,5 @@
+import React from 'react';
+
 import './Block.css'
 
 import { figures } from '../utils/figures';
@@ -8,4 +10,4 @@ const Block = ({id, value}) => {
   )
 }
 
-export default Block
+export default React.memo(Block);

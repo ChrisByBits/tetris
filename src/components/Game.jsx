@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import './Game.css'
 
 import { checkCollision } from '../utils/collisions';
 
+import Stats from './Stats';
 import Board from './Board'
 import NextFigures from './NextFigures'
 
@@ -11,17 +12,32 @@ import { usePlayer } from '../hooks/usePlayer';
 import { createNewFiguresArray, useNextFigures } from '../hooks/useNextFigures';
 import { createEmptyBoard, useBoard } from '../hooks/useBoard';
 import { useInterval } from '../hooks/useInterval';
+import { useStats } from '../hooks/useStats';
 
 import music from '../audios/music.mp3'
 
 const Game = () => {
   const [nextFigures, setNextFigures, updateNextFigures] = useNextFigures();
-  const [player, resetPosition, updatePosition, rotate] = usePlayer(nextFigures);
-  const [board, setBoard] = useBoard(player, resetPosition, updateNextFigures);
+  const [player, resetPosition, updatePosition, rotate] = usePlayer(nextFigures); 
+  const [rows, setRows, score, setScore, level, setLevel] = useStats();
+
+  const calculateScore = useCallback((erasedRows) => {
+    
+    const points = [40, 100, 300, 1200];
+    setRows(prevRows => prevRows + erasedRows);
+    setScore(prevScore => prevScore + points[erasedRows - 1] * (level + 1));
+    
+  }, [level]);
+
+  const [board, setBoard, erasedRows] = useBoard(player, resetPosition, updateNextFigures, calculateScore);
+
   const [gameOver, setGameOver] = useState(false);
   const [fallTime, setFallTime] = useState(null);
 
   const start = () => {
+    setScore(0);
+    setLevel(0);
+    setRows(0);
     setGameOver(false);
     setNextFigures(createNewFiguresArray());
     setBoard(createEmptyBoard());
@@ -35,7 +51,10 @@ const Game = () => {
   }
 
   const fall = () => {
-    setFallTime(1000);
+    if (rows > (level + 1) * 5) {
+      setFallTime(1000 / (level + 1) * 200);
+      setLevel(prevState => prevState + 1);
+    }
 
     if (!checkCollision(player, board, { posX: 0, posY: 1 }))
       updatePosition({ posX: 0, posY: 1, collided: false });
@@ -48,11 +67,9 @@ const Game = () => {
   }
 
   const hardFall = () => {
-    setFallTime(1000);
     let iterator = 0;
-    while(!checkCollision(player, board, { posX: 0, posY: iterator })) {
-        iterator++;
-    }
+    while(!checkCollision(player, board, { posX: 0, posY: iterator }))
+      iterator++;
     updatePosition({ posX: 0, posY: iterator - 1, collided: true });
     // since the collision is being detected in the current cell, it goes back one row
   }
@@ -64,7 +81,6 @@ const Game = () => {
 
   useEffect(() => {
     const movePlayer = (event) => {
-      console.log(event.key)
       switch (event.key.toLowerCase()) {
         case 'arrowleft': {
           moveLat(-1);
@@ -102,6 +118,20 @@ const Game = () => {
   }, [moveLat, moveDown, hardFall, rotate] // the effect must be run again if these functions change, but with the player position updated
   );
 
+  useEffect(() => {
+    const reactivateInterval = (event) => {
+      if (!gameOver) {
+        if (event.key === 'ArrowDown') {
+          setFallTime(1000 / (level + 1) + 200);
+        }
+      }
+    }
+    document.addEventListener('keyup', reactivateInterval);
+    return () => {
+      document.removeEventListener('keyup', reactivateInterval);
+    };
+  }, [setFallTime, level, gameOver])
+
   useInterval(() => {
     fall();
   }, fallTime);
@@ -119,6 +149,7 @@ const Game = () => {
 
   return (
     <div id ="game">
+      <Stats score = {score} level = {level} rows = {rows} />
       <Board board = {board}/>
       <NextFigures figuresArray = {nextFigures}/>
     </div>

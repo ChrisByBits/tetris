@@ -7,22 +7,24 @@ export const createEmptyBoard = () => {
   return Array.from({ length: ROWS }, () => Array(COLUMNS).fill(0).map(() => ({value: 0, state: 'erase'})));
 };
 
-export const useBoard = (player, respawn, updateNextFigures) => {
+export const useBoard = (player, respawn, updateNextFigures, calculateScore) => {
   const [board, setBoard] = useState(createEmptyBoard());
   const [erasedRows, setErasedRows] = useState(0);
 
+  let tempErasedRows = 0;
+
   useEffect(() => {
-
-    setErasedRows(0);
-
-    const eraseRows = (newBoard) => {
+    
+    const eraseRows = (newBoard) => {      
+      tempErasedRows = 0;
+      
       return newBoard.reduce((accumulator, row) => {
         if (row.every(cell => cell.value !== 0)) {
-          setErasedRows(prev => prev + 1);
-          accumulator.unshift(new Array(COLUMNS).fill(0).map(() => ({value: 0, state: 'erase'})));
-          return accumulator;
+          tempErasedRows += 1;
+          accumulator.unshift(new Array(COLUMNS).fill(0).map(() => ({ value: 0, state: 'erase' })));
+        } else {
+          accumulator.push(row);
         }
-        accumulator.push(row);
         return accumulator;
       }, []);
     };
@@ -41,15 +43,23 @@ export const useBoard = (player, respawn, updateNextFigures) => {
       if (player.collided) {
         updateNextFigures();
         respawn();
-        return eraseRows(newState);
+
+        const updatedBoard = eraseRows(newState);
+
+        if (tempErasedRows > 0) {
+          calculateScore(tempErasedRows);
+          setErasedRows(0); 
+        }
+
+        return updatedBoard;
       }
 
       return newState;
     };
     
-    setBoard((prevState) => update(prevState));
+    setBoard((prevState) => update(prevState));    
 
-  }, [player.collided, player.position.x, player.position.y, player.shape, respawn, updateNextFigures]);
+  }, [player.collided, player.position.x, player.position.y, player.shape, respawn, updateNextFigures, calculateScore]);
 
-  return [board, setBoard];
+  return [board, setBoard, erasedRows];
 }
