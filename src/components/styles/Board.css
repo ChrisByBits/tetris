@@ -6,6 +6,7 @@
   gap: 2px;
   border: 2px solid white;
   border-top: none;
+  position: relative;
 }
 
 .board-row{
@@ -13,4 +14,13 @@
   grid-template-columns: repeat(10, 35px);
   height: 35px;
   gap: 2px;
+}
+
+#difuser {
+  position: absolute;
+  width: 368px;
+  height: 775px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: absolute;
 }

@@ -1,4 +1,4 @@
-import './Stats.css'
+import './styles/Stats.css'
 
 const Stats = ({score, level, rows}) => {
 

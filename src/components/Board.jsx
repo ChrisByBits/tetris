@@ -1,8 +1,8 @@
 import React from 'react';
-import './Board.css';
+import './styles/Board.css';
 import Block from './Block';
 
-const Board = ({ board }) => {
+const Board = ({ board, isGamePaused }) => {
   const renderBoard = () => {
     return board.map((row, rowIndex) => (
       <div id={rowIndex} key={rowIndex} className="board-row">
@@ -16,6 +16,7 @@ const Board = ({ board }) => {
   return (
     <div id="board">
       {renderBoard()}
+      <div id="difuser" style = {{display: `${!isGamePaused ? 'none': 'block'}`}}/>
     </div>
   );
 };

@@ -72,5 +72,5 @@ export const usePlayer = nextFigures => {
     setPlayer(auxPlayer);
   }
 
-  return [player, respawn, updatePosition, rotate];
+  return [player, setPlayer, respawn, updatePosition, rotate];
 }

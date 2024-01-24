@@ -1,4 +1,4 @@
-import './NextFigures.css'
+import './styles/NextFigures.css'
 
 import Block from './Block';
 

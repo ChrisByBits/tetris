@@ -28,7 +28,7 @@ export const useNextFigures = () => {
       const auxiliarArray = [...prevState];
       auxiliarArray.shift();
       pushNewFigure(auxiliarArray);
-      return  auxiliarArray;
+      return auxiliarArray;
     })}, []);
 
   return [nextFigures, setNextFigures, updateNextFigures];

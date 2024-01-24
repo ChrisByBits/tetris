@@ -3,7 +3,7 @@ import Game from './components/Game.jsx'
 
 const App = () => {
   return (
-    <div id="app" style={{width: "100%"}}>
+    <div id="app">
       <Game />
     </div>
   )

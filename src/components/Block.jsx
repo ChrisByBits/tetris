@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Block.css'
+import './styles/Block.css'
 
 import { figures } from '../utils/figures';
 

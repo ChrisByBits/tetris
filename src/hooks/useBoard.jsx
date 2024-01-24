@@ -61,5 +61,5 @@ export const useBoard = (player, respawn, updateNextFigures, calculateScore) => 
 
   }, [player.collided, player.position.x, player.position.y, player.shape, respawn, updateNextFigures, calculateScore]);
 
-  return [board, setBoard, erasedRows];
+  return [board, setBoard ];
 }
